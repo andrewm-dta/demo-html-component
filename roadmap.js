@@ -1,7 +1,22 @@
+Content Release Roadmap
+
 // Fetch the JSON file containing the content release data
 fetch('content-releases.json')
-  .then(response => response.json())
-  .then(data => createRoadmap(data))
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.text();  // Get the raw text instead of parsing JSON
+  })
+  .then(text => {
+    try {
+      const data = JSON.parse(text);  // Try to parse the JSON
+      createRoadmap(data);
+    } catch (e) {
+      console.error('JSON parsing error:', e);
+      console.error('Received text:', text);
+    }
+  })
   .catch(error => console.error('Error loading the roadmap data:', error));
 
 function createRoadmap(releases) {

@@ -1,0 +1,17 @@
+[
+    {
+      "date": "2024-08-15",
+      "title": "New Blog Section",
+      "description": "Launching a new blog section with weekly articles on web development."
+    },
+    {
+      "date": "2024-09-01",
+      "title": "User Profiles",
+      "description": "Implementing user profiles with customizable avatars and bios."
+    },
+    {
+      "date": "2024-10-10",
+      "title": "Community Forum",
+      "description": "Adding a community forum for users to discuss topics and share ideas."
+    }
+  ]
