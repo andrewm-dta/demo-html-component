@@ -7,10 +7,18 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="roadmap-container">
-        <div id="timeline"></div>
-        <div id="release-details"></div>
-    </div>
+    <header>
+        <h1>Content Release Roadmap</h1>
+    </header>
+    <main id="roadmap-container">
+        <section id="timeline" aria-label="Timeline of content releases">
+            <!-- Timeline items will be inserted here by JavaScript -->
+        </section>
+        <section id="release-details" aria-live="polite">
+            <h2 id="details-title">Release Details</h2>
+            <!-- Release details will be inserted here by JavaScript -->
+        </section>
+    </main>
     <script src="roadmap.js"></script>
 </body>
 </html>
