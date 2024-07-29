@@ -17,6 +17,16 @@
         h1, h2, h3 {
             color: #2c3e50;
         }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 20px;
+        }
+        .last-updated {
+            font-size: 1rem;
+            color: #7f8c8d;
+        }
         .dashboard {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -72,8 +82,9 @@
     </style>
 </head>
 <body>
-    <header>
+    <header class="dashboard-header">
         <h1>Beta Website Feedback Dashboard</h1>
+        <p id="lastUpdated" class="last-updated"></p>
     </header>
 
     <main>
@@ -97,11 +108,17 @@
             try {
                 const response = await fetch('feedback-data.json');
                 const data = await response.json();
-                return data.feedbackData;
+                return data;
             } catch (error) {
                 console.error('Error loading feedback data:', error);
-                return [];
+                return null;
             }
+        }
+
+        // Function to format date
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
         }
 
         // Function to create chart
@@ -183,10 +200,14 @@
 
         // Main function to initialize the dashboard
         async function initDashboard() {
-            const feedbackData = await loadFeedbackData();
-            if (feedbackData.length > 0) {
-                createChart(feedbackData);
-                populateFeedbackList(feedbackData);
+            const data = await loadFeedbackData();
+            if (data && data.feedbackData) {
+                createChart(data.feedbackData);
+                populateFeedbackList(data.feedbackData);
+                
+                // Update the last updated date
+                const lastUpdatedElement = document.getElementById('lastUpdated');
+                lastUpdatedElement.textContent = `Last Updated: ${formatDate(data.lastUpdated)}`;
             } else {
                 document.querySelector('.dashboard').innerHTML = '<p>Error loading feedback data. Please try again later.</p>';
             }
