@@ -3,41 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Content Release Roadmap</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        #roadmap {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .release {
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-        .release-date {
-            color: #666;
-            font-size: 0.9em;
-        }
-        .release-title {
-            margin: 10px 0;
-            color: #333;
-        }
-        .release-description {
-            color: #555;
-        }
-    </style>
+    <title>Interactive Content Release Roadmap</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="roadmap"></div>
+    <div id="roadmap-container">
+        <div id="timeline"></div>
+        <div id="release-details"></div>
+    </div>
     <script src="roadmap.js"></script>
 </body>
 </html>
