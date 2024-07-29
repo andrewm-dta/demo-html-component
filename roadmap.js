@@ -1,5 +1,3 @@
-Content Release Roadmap
-
 // Fetch the JSON file containing the content release data
 fetch('content-releases.json')
   .then(response => {
