@@ -118,19 +118,30 @@
         // Function to format date
         function formatDate(dateString) {
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            return new Date(dateString).toLocaleDateString(undefined, options);
+            const date = new Date(dateString);
+            return isNaN(date.getTime()) ? 'Invalid Date' : date.toLocaleDateString(undefined, options);
+        }
+
+        // Function to calculate total instances for a category
+        function calculateCategoryTotal(category) {
+            return category.issues.reduce((total, issue) => total + issue.instances, 0);
         }
 
         // Function to create chart
         function createChart(feedbackData) {
             const ctx = document.getElementById('feedbackChart').getContext('2d');
+            const chartData = feedbackData.map(category => ({
+                category: category.category,
+                total: calculateCategoryTotal(category)
+            }));
+
             const chart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: feedbackData.map(item => item.category),
+                    labels: chartData.map(item => item.category),
                     datasets: [{
                         label: 'Number of Feedback',
-                        data: feedbackData.map(item => item.count),
+                        data: chartData.map(item => item.total),
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.6)',
                             'rgba(54, 162, 235, 0.6)',
@@ -173,7 +184,7 @@
 
             // Update chart description for screen readers
             const chartDescription = document.getElementById('chartDescription');
-            chartDescription.textContent = `Bar chart showing feedback categories: ${feedbackData.map(item => `${item.category} with ${item.count} feedback`).join(', ')}`;
+            chartDescription.textContent = `Bar chart showing feedback categories: ${chartData.map(item => `${item.category} with ${item.total} feedback`).join(', ')}`;
         }
 
         // Function to populate feedback list
@@ -182,10 +193,11 @@
             feedbackItems.innerHTML = ''; // Clear existing content
 
             feedbackData.forEach(category => {
+                const categoryTotal = calculateCategoryTotal(category);
                 const categoryElement = document.createElement('div');
                 categoryElement.className = 'feedback-category';
                 categoryElement.innerHTML = `
-                    <h3>${category.category} (${category.count} total)</h3>
+                    <h3>${category.category} (${categoryTotal} total)</h3>
                     ${category.issues.map(issue => `
                         <div class="feedback-issue">
                             <p class="feedback-description">${issue.description}</p>
@@ -207,7 +219,8 @@
                 
                 // Update the last updated date
                 const lastUpdatedElement = document.getElementById('lastUpdated');
-                lastUpdatedElement.textContent = `Last Updated: ${formatDate(data.lastUpdated)}`;
+                const formattedDate = formatDate(data.lastUpdated);
+                lastUpdatedElement.textContent = `Last Updated: ${formattedDate}`;
             } else {
                 document.querySelector('.dashboard').innerHTML = '<p>Error loading feedback data. Please try again later.</p>';
             }
