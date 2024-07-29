@@ -3,7 +3,6 @@
     "feedbackData": [
       {
         "category": "User Interface",
-        "count": 17,
         "issues": [
           {
             "description": "The layout is confusing",
@@ -24,7 +23,6 @@
       },
       {
         "category": "Performance",
-        "count": 8,
         "issues": [
           {
             "description": "The site loads slowly",
@@ -35,7 +33,6 @@
       },
       {
         "category": "Features",
-        "count": 16,
         "issues": [
           {
             "description": "Missing export functionality",
@@ -51,7 +48,6 @@
       },
       {
         "category": "Bug",
-        "count": 5,
         "issues": [
           {
             "description": "Form submission errors",
