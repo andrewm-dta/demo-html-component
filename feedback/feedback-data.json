@@ -1,0 +1,63 @@
+{
+    "feedbackData": [
+      {
+        "category": "User Interface",
+        "count": 17,
+        "issues": [
+          {
+            "description": "The layout is confusing",
+            "instances": 8,
+            "response": "We are working on a redesign to improve navigation."
+          },
+          {
+            "description": "Unable to click on tiles",
+            "instances": 5,
+            "response": "We've identified the issue and are implementing a fix to ensure all tiles are clickable."
+          },
+          {
+            "description": "Thumbs Up/Down widget loads slowly",
+            "instances": 4,
+            "response": "We're optimizing the widget's loading process to improve performance."
+          }
+        ]
+      },
+      {
+        "category": "Performance",
+        "count": 8,
+        "issues": [
+          {
+            "description": "The site loads slowly",
+            "instances": 8,
+            "response": "We are optimizing our backend and implementing caching to improve load times."
+          }
+        ]
+      },
+      {
+        "category": "Features",
+        "count": 16,
+        "issues": [
+          {
+            "description": "Missing export functionality",
+            "instances": 12,
+            "response": "Export feature is planned for the next release."
+          },
+          {
+            "description": "Search functionality needs improvement",
+            "instances": 4,
+            "response": "We're enhancing our search algorithm to provide more accurate and relevant results."
+          }
+        ]
+      },
+      {
+        "category": "Bug",
+        "count": 5,
+        "issues": [
+          {
+            "description": "Form submission errors",
+            "instances": 5,
+            "response": "We have identified the issue and a fix will be deployed this week."
+          }
+        ]
+      }
+    ]
+  }

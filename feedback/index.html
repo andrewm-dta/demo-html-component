@@ -14,7 +14,7 @@
             margin: 0 auto;
             padding: 20px;
         }
-        h1, h2 {
+        h1, h2, h3 {
             color: #2c3e50;
         }
         .dashboard {
@@ -34,19 +34,28 @@
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .feedback-item {
+        .feedback-category {
             background-color: #fff;
             border: 1px solid #e0e0e0;
             border-radius: 4px;
             padding: 15px;
             margin-bottom: 15px;
         }
-        .feedback-category {
+        .feedback-issue {
+            margin-bottom: 10px;
+            padding-left: 15px;
+            border-left: 3px solid #3498db;
+        }
+        .feedback-description {
             font-weight: bold;
             color: #3498db;
         }
+        .feedback-instances {
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
         .feedback-response {
-            margin-top: 10px;
+            margin-top: 5px;
             font-style: italic;
         }
         .visually-hidden {
@@ -83,79 +92,108 @@
     </main>
 
     <script>
-        // Sample data - replace with actual data in a real application
-        const feedbackData = [
-            { category: 'User Interface', count: 15, feedback: 'The layout is confusing', response: 'We are working on a redesign to improve navigation.' },
-            { category: 'Content', count: 8, feedback: 'The content on the site needs consideration', response: 'We are reviewing our digital content style in line with feedback and recommendations and will update the content.' },
-            { category: 'Features', count: 12, feedback: 'Poor Search Performance', response: 'We are exploring the use of Generative AI to develop a more engaging and intuitive search capability' },
-            { category: 'Bug', count: 5, feedback: 'Form submission errors', response: 'We have identified the issue and a fix will be deployed this week.' }
-        ];
+        // Function to load JSON data
+        async function loadFeedbackData() {
+            try {
+                const response = await fetch('feedback-data.json');
+                const data = await response.json();
+                return data.feedbackData;
+            } catch (error) {
+                console.error('Error loading feedback data:', error);
+                return [];
+            }
+        }
 
-        // Create chart
-        const ctx = document.getElementById('feedbackChart').getContext('2d');
-        const chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: feedbackData.map(item => item.category),
-                datasets: [{
-                    label: 'Number of Feedback',
-                    data: feedbackData.map(item => item.count),
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.6)',
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(255, 206, 86, 0.6)',
-                        'rgba(75, 192, 192, 0.6)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
+        // Function to create chart
+        function createChart(feedbackData) {
+            const ctx = document.getElementById('feedbackChart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: feedbackData.map(item => item.category),
+                    datasets: [{
+                        label: 'Number of Feedback',
+                        data: feedbackData.map(item => item.count),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Number of Feedback'
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
                         }
                     },
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Feedback Categories'
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Feedback'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Feedback Categories'
+                            }
                         }
                     }
                 }
+            });
+
+            // Update chart description for screen readers
+            const chartDescription = document.getElementById('chartDescription');
+            chartDescription.textContent = `Bar chart showing feedback categories: ${feedbackData.map(item => `${item.category} with ${item.count} feedback`).join(', ')}`;
+        }
+
+        // Function to populate feedback list
+        function populateFeedbackList(feedbackData) {
+            const feedbackItems = document.getElementById('feedbackItems');
+            feedbackItems.innerHTML = ''; // Clear existing content
+
+            feedbackData.forEach(category => {
+                const categoryElement = document.createElement('div');
+                categoryElement.className = 'feedback-category';
+                categoryElement.innerHTML = `
+                    <h3>${category.category} (${category.count} total)</h3>
+                    ${category.issues.map(issue => `
+                        <div class="feedback-issue">
+                            <p class="feedback-description">${issue.description}</p>
+                            <p class="feedback-instances">${issue.instances} instance${issue.instances !== 1 ? 's' : ''}</p>
+                            <p class="feedback-response"><strong>Response:</strong> ${issue.response}</p>
+                        </div>
+                    `).join('')}
+                `;
+                feedbackItems.appendChild(categoryElement);
+            });
+        }
+
+        // Main function to initialize the dashboard
+        async function initDashboard() {
+            const feedbackData = await loadFeedbackData();
+            if (feedbackData.length > 0) {
+                createChart(feedbackData);
+                populateFeedbackList(feedbackData);
+            } else {
+                document.querySelector('.dashboard').innerHTML = '<p>Error loading feedback data. Please try again later.</p>';
             }
-        });
+        }
 
-        // Update chart description for screen readers
-        const chartDescription = document.getElementById('chartDescription');
-        chartDescription.textContent = `Bar chart showing feedback categories: ${feedbackData.map(item => `${item.category} with ${item.count} feedback`).join(', ')}`;
-
-        // Populate feedback list
-        const feedbackItems = document.getElementById('feedbackItems');
-        feedbackData.forEach(item => {
-            const feedbackItem = document.createElement('div');
-            feedbackItem.className = 'feedback-item';
-            feedbackItem.innerHTML = `
-                <h3 class="feedback-category">${item.category}</h3>
-                <p><strong>Feedback:</strong> ${item.feedback}</p>
-                <p class="feedback-response"><strong>Response:</strong> ${item.response}</p>
-            `;
-            feedbackItems.appendChild(feedbackItem);
-        });
+        // Initialize the dashboard when the page loads
+        window.addEventListener('load', initDashboard);
     </script>
 </body>
 </html>
