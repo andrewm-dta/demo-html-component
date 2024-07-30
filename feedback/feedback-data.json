@@ -15,9 +15,9 @@
             "response": "We've identified the issue and are implementing a fix to ensure all tiles are clickable."
           },
           {
-            "description": "Thumbs Up/Down widget loads slowly",
+            "description": "Thumbs Up/Down widget doesn't display on all browsers",
             "instances": 4,
-            "response": "We're optimizing the widget's loading process to improve performance."
+            "response": "We're optimizing the widget's to support broader pool of browsers."
           }
         ]
       },
