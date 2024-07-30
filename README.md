@@ -6,7 +6,7 @@
 [/feedback/index.html](/feedback/index.html)
 
 ## AGA Search
-[/GoogleSearch/agasearch.html](/GoogleSearch/agasearch.html)
+[Vertex AI enabled Search - AGA](/GoogleSearch/agasearch.html)
 
 ## digital.gov.au 
 [SimpleSearch - using Google](/GoogleSearch/simpledigitalgovau.html)
