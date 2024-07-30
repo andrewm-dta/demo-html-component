@@ -77,17 +77,10 @@
             border-left: 3px solid var(--link-blue);
         }
 
-        .issue-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 5px;
-        }
-
         .feedback-description {
             font-weight: bold;
             color: var(--link-blue);
-            margin: 0;
+            margin: 0 0 5px 0;
         }
 
         .feedback-instances {
@@ -102,11 +95,12 @@
         }
 
         .resolution-status {
+            display: inline-block;
             padding: 2px 5px;
             border-radius: 3px;
             font-size: 0.8em;
             font-weight: bold;
-            display: inline-block;
+            margin-bottom: 5px;
         }
 
         .resolved {
@@ -291,12 +285,10 @@
                     <h3>${category.category} (${total} total, ${resolved} resolved, ${unresolved} unresolved)</h3>
                     ${category.issues.map(issue => `
                         <div class="feedback-issue">
-                            <div class="issue-header">
-                                <p class="feedback-description">${issue.description}</p>
-                                <span class="resolution-status ${issue.resolved ? 'resolved' : 'unresolved'}">
-                                    ${issue.resolved ? 'Resolved' : 'Unresolved'}
-                                </span>
-                            </div>
+                            <p class="feedback-description">${issue.description}</p>
+                            <span class="resolution-status ${issue.resolved ? 'resolved' : 'unresolved'}">
+                                ${issue.resolved ? 'Resolved' : 'Unresolved'}
+                            </span>
                             <p class="feedback-instances">${issue.instances} instance${issue.instances !== 1 ? 's' : ''}</p>
                             <p class="feedback-response"><strong>Response:</strong> ${issue.response}</p>
                         </div>
