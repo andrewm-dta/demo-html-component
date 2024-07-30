@@ -5,9 +5,9 @@
         "category": "User Interface",
         "issues": [
           {
-            "description": "The layout is confusing",
-            "instances": 8,
-            "response": "We are working on a redesign to improve navigation."
+            "description": "The tiles aren't clickable!",
+            "instances": 4,
+            "response": "We are working on a redesign to improve navigation. This will see a change in how the tile works - meaning not just the text is a hyperlink."
           },
           {
             "description": "Unable to click on tiles",
@@ -41,8 +41,8 @@
           },
           {
             "description": "Search functionality needs improvement",
-            "instances": 4,
-            "response": "We're enhancing our search algorithm to provide more accurate and relevant results."
+            "instances": 11,
+            "response": "We're fixed our site search to provide more accurate and relevant results."
           }
         ]
       },
@@ -50,11 +50,21 @@
         "category": "Bug",
         "issues": [
           {
-            "description": "Form submission errors",
-            "instances": 5,
-            "response": "We have identified the issue and a fix will be deployed this week."
+            "description": "Access Denied Errors - primarily in banner",
+            "instances": 3,
+            "response": "We have been further investigating this issue and may have had to do with caching. If you encounter this error - please let us know what page this is on."
           }
         ]
-      }
+      },
+      {
+        "category": "Accessibility",
+        "issues": [
+          {
+            "description": "Issues reporting around some versions of screen readers.",
+            "instances": 2,
+            "response": "We have been working with Vision Australia to review and rectify these accessibility issues as they occur. If this continues to occur, please provide device details or contact information."
+          }
+        ]
+      },
     ]
   }
