@@ -72,20 +72,28 @@
         }
 
         .feedback-issue {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             padding-left: 15px;
             border-left: 3px solid var(--link-blue);
-            position: relative;
+        }
+
+        .issue-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
         }
 
         .feedback-description {
             font-weight: bold;
             color: var(--link-blue);
+            margin: 0;
         }
 
         .feedback-instances {
             font-size: 0.9em;
             color: var(--dark-gray);
+            margin: 5px 0;
         }
 
         .feedback-response {
@@ -94,13 +102,11 @@
         }
 
         .resolution-status {
-            position: absolute;
-            top: 0;
-            right: 0;
             padding: 2px 5px;
             border-radius: 3px;
             font-size: 0.8em;
             font-weight: bold;
+            display: inline-block;
         }
 
         .resolved {
@@ -285,12 +291,14 @@
                     <h3>${category.category} (${total} total, ${resolved} resolved, ${unresolved} unresolved)</h3>
                     ${category.issues.map(issue => `
                         <div class="feedback-issue">
-                            <p class="feedback-description">${issue.description}</p>
+                            <div class="issue-header">
+                                <p class="feedback-description">${issue.description}</p>
+                                <span class="resolution-status ${issue.resolved ? 'resolved' : 'unresolved'}">
+                                    ${issue.resolved ? 'Resolved' : 'Unresolved'}
+                                </span>
+                            </div>
                             <p class="feedback-instances">${issue.instances} instance${issue.instances !== 1 ? 's' : ''}</p>
                             <p class="feedback-response"><strong>Response:</strong> ${issue.response}</p>
-                            <span class="resolution-status ${issue.resolved ? 'resolved' : 'unresolved'}">
-                                ${issue.resolved ? 'Resolved' : 'Unresolved'}
-                            </span>
                         </div>
                     `).join('')}
                 `;
