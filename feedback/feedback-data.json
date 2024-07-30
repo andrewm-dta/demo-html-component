@@ -11,12 +11,6 @@
             "resolved": false
           },
           {
-            "description": "Unable to click on tiles",
-            "instances": 5,
-            "response": "We've identified the issue and are implementing a fix to ensure all tiles are clickable.",
-            "resolved": false
-          },
-          {
             "description": "Thumbs Up/Down widget doesn't display on all browsers",
             "instances": 4,
             "response": "We're optimizing the widget's to support broader pool of browsers.",
@@ -38,12 +32,6 @@
       {
         "category": "Features",
         "issues": [
-          {
-            "description": "Missing export functionality",
-            "instances": 12,
-            "response": "Export feature is planned for the next release.",
-            "resolved": false
-          },
           {
             "description": "Search functionality needs improvement",
             "instances": 11,
