@@ -12,7 +12,9 @@
             --dark-gray: #333333;
             --light-gray: #F8F8F8;
             --link-blue: #0066CC;
-            --focus-color: #FFD700; /* Yellow for high visibility */
+            --focus-color: #FFD700;
+            --resolved-green: #28a745;
+            --unresolved-red: #dc3545;
         }
 
         body {
@@ -73,6 +75,7 @@
             margin-bottom: 10px;
             padding-left: 15px;
             border-left: 3px solid var(--link-blue);
+            position: relative;
         }
 
         .feedback-description {
@@ -90,6 +93,26 @@
             font-style: italic;
         }
 
+        .resolution-status {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .resolved {
+            background-color: var(--resolved-green);
+            color: var(--white);
+        }
+
+        .unresolved {
+            background-color: var(--unresolved-red);
+            color: var(--white);
+        }
+
         .visually-hidden {
             position: absolute;
             width: 1px;
@@ -102,26 +125,22 @@
             border: 0;
         }
 
-        /* Focus styles */
         *:focus {
             outline: 3px solid var(--focus-color);
             outline-offset: 2px;
         }
 
-        /* Ensure focus is visible on high contrast mode */
         @media screen and (-ms-high-contrast: active) {
             *:focus {
                 outline: 2px solid windowText;
             }
         }
 
-        /* Interactive elements hover state */
         a:hover, button:hover {
             text-decoration: underline;
             color: var(--primary-blue);
         }
 
-        /* Skip to main content link */
         .skip-link {
             background: var(--primary-blue);
             color: var(--white);
@@ -160,7 +179,6 @@
     </main>
 
     <script>
-        // Function to load JSON data
         async function loadFeedbackData() {
             try {
                 const response = await fetch('feedback-data.json');
@@ -172,101 +190,107 @@
             }
         }
 
-        // Function to format date
         function formatDate(dateString) {
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
             const date = new Date(dateString);
             return isNaN(date.getTime()) ? 'Invalid Date' : date.toLocaleDateString(undefined, options);
         }
 
-        // Function to calculate total instances for a category
-        function calculateCategoryTotal(category) {
-            return category.issues.reduce((total, issue) => total + issue.instances, 0);
+        function calculateCategoryTotals(category) {
+            const total = category.issues.reduce((sum, issue) => sum + issue.instances, 0);
+            const resolved = category.issues.reduce((sum, issue) => sum + (issue.resolved ? issue.instances : 0), 0);
+            const unresolved = total - resolved;
+            return { total, resolved, unresolved };
         }
 
-        // Function to create chart
         function createChart(feedbackData) {
             const ctx = document.getElementById('feedbackChart').getContext('2d');
-            const chartData = feedbackData.map(category => ({
-                category: category.category,
-                total: calculateCategoryTotal(category)
-            }));
+            const chartData = feedbackData.map(category => {
+                const { total, resolved, unresolved } = calculateCategoryTotals(category);
+                return {
+                    category: category.category,
+                    resolved: resolved,
+                    unresolved: unresolved
+                };
+            });
 
             const chart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: chartData.map(item => item.category),
-                    datasets: [{
-                        label: 'Number of Feedback',
-                        data: chartData.map(item => item.total),
-                        backgroundColor: '#005A70',
-                        borderColor: '#333333',
-                        borderWidth: 1,
-                        hoverBackgroundColor: '#0066CC'
-                    }]
+                    datasets: [
+                        {
+                            label: 'Resolved',
+                            data: chartData.map(item => item.resolved),
+                            backgroundColor: 'rgba(40, 167, 69, 0.8)',
+                            borderColor: 'rgba(40, 167, 69, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Unresolved',
+                            data: chartData.map(item => item.unresolved),
+                            backgroundColor: 'rgba(220, 53, 69, 0.8)',
+                            borderColor: 'rgba(220, 53, 69, 1)',
+                            borderWidth: 1
+                        }
+                    ]
                 },
                 options: {
                     responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `${context.dataset.label}: ${context.parsed.y}`;
-                                }
-                            }
-                        }
-                    },
                     scales: {
+                        x: {
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: 'Feedback Categories'
+                            }
+                        },
                         y: {
+                            stacked: true,
                             beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'Number of Feedback',
-                                color: '#333333'
-                            },
-                            ticks: {
-                                color: '#333333'
+                                text: 'Number of Feedback'
                             }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Feedback Categories',
-                                color: '#333333'
-                            },
-                            ticks: {
-                                color: '#333333'
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.parsed.y || 0;
+                                    return `${label}: ${value}`;
+                                }
                             }
                         }
                     }
                 }
             });
 
-            // Update chart description for screen readers
             const chartDescription = document.getElementById('chartDescription');
-            chartDescription.textContent = `Bar chart showing feedback categories: ${chartData.map(item => `${item.category} with ${item.total} feedback`).join(', ')}`;
+            chartDescription.textContent = `Stacked bar chart showing feedback categories with resolved and unresolved issues: ${chartData.map(item => `${item.category} with ${item.resolved} resolved and ${item.unresolved} unresolved feedback`).join(', ')}`;
         }
 
-        // Function to populate feedback list
         function populateFeedbackList(feedbackData) {
             const feedbackItems = document.getElementById('feedbackItems');
-            feedbackItems.innerHTML = ''; // Clear existing content
+            feedbackItems.innerHTML = '';
 
             feedbackData.forEach(category => {
-                const categoryTotal = calculateCategoryTotal(category);
+                const { total, resolved, unresolved } = calculateCategoryTotals(category);
                 const categoryElement = document.createElement('div');
                 categoryElement.className = 'feedback-category';
-                categoryElement.setAttribute('tabindex', '0'); // Make focusable
+                categoryElement.setAttribute('tabindex', '0');
                 categoryElement.innerHTML = `
-                    <h3>${category.category} (${categoryTotal} total)</h3>
+                    <h3>${category.category} (${total} total, ${resolved} resolved, ${unresolved} unresolved)</h3>
                     ${category.issues.map(issue => `
                         <div class="feedback-issue">
                             <p class="feedback-description">${issue.description}</p>
                             <p class="feedback-instances">${issue.instances} instance${issue.instances !== 1 ? 's' : ''}</p>
                             <p class="feedback-response"><strong>Response:</strong> ${issue.response}</p>
+                            <span class="resolution-status ${issue.resolved ? 'resolved' : 'unresolved'}">
+                                ${issue.resolved ? 'Resolved' : 'Unresolved'}
+                            </span>
                         </div>
                     `).join('')}
                 `;
@@ -274,14 +298,12 @@
             });
         }
 
-        // Main function to initialize the dashboard
         async function initDashboard() {
             const data = await loadFeedbackData();
             if (data && data.feedbackData) {
                 createChart(data.feedbackData);
                 populateFeedbackList(data.feedbackData);
                 
-                // Update the last updated date
                 const lastUpdatedElement = document.getElementById('lastUpdated');
                 const formattedDate = formatDate(data.lastUpdated);
                 lastUpdatedElement.textContent = `Last Updated: ${formattedDate}`;
@@ -290,7 +312,6 @@
             }
         }
 
-        // Initialize the dashboard when the page loads
         window.addEventListener('load', initDashboard);
     </script>
 </body>

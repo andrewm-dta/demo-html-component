@@ -7,17 +7,20 @@
           {
             "description": "The tiles aren't clickable!",
             "instances": 4,
-            "response": "We are working on a redesign to improve navigation. This will see a change in how the tile works - meaning not just the text is a hyperlink."
+            "response": "We are working on a redesign to improve navigation. This will see a change in how the tile works - meaning not just the text is a hyperlink.",
+            "resolved": false
           },
           {
             "description": "Unable to click on tiles",
             "instances": 5,
-            "response": "We've identified the issue and are implementing a fix to ensure all tiles are clickable."
+            "response": "We've identified the issue and are implementing a fix to ensure all tiles are clickable.",
+            "resolved": false
           },
           {
             "description": "Thumbs Up/Down widget doesn't display on all browsers",
             "instances": 4,
-            "response": "We're optimizing the widget's to support broader pool of browsers."
+            "response": "We're optimizing the widget's to support broader pool of browsers.",
+            "resolved": false
           }
         ]
       },
@@ -27,7 +30,8 @@
           {
             "description": "The site loads slowly",
             "instances": 8,
-            "response": "We are optimizing our backend and implementing caching to improve load times."
+            "response": "We are optimizing our backend and implementing caching to improve load times.",
+            "resolved": false
           }
         ]
       },
@@ -37,12 +41,14 @@
           {
             "description": "Missing export functionality",
             "instances": 12,
-            "response": "Export feature is planned for the next release."
+            "response": "Export feature is planned for the next release.",
+            "resolved": false
           },
           {
             "description": "Search functionality needs improvement",
             "instances": 11,
-            "response": "We're fixed our site search to provide more accurate and relevant results."
+            "response": "We're fixed our site search to provide more accurate and relevant results.",
+            "resolved": true
           }
         ]
       },
@@ -52,7 +58,8 @@
           {
             "description": "Access Denied Errors - primarily in banner",
             "instances": 3,
-            "response": "We have been further investigating this issue and may have had to do with caching. If you encounter this error - please let us know what page this is on."
+            "response": "We have been further investigating this issue and may have had to do with caching. If you encounter this error - please let us know what page this is on. For the meantime, marking issue as RESOLVED",
+            "resolved": true
           }
         ]
       },
@@ -62,7 +69,8 @@
           {
             "description": "Issues reporting around some versions of screen readers.",
             "instances": 2,
-            "response": "We have been working with Vision Australia to review and rectify these accessibility issues as they occur. If this continues to occur, please provide device details or contact information."
+            "response": "We have been working with Vision Australia to review and rectify these accessibility issues as they occur. If this continues to occur, please provide device details or contact information.",
+            "resolved": false
           }
         ]
       }
