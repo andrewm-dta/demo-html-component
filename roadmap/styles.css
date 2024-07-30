@@ -46,17 +46,13 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.timeline-item:hover .timeline-dot,
-.timeline-item:focus .timeline-dot {
-    background-color: #2c3e50;
-}
-
 .timeline-content {
     margin-left: 30px;
     background-color: white;
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .timeline-date {
@@ -77,9 +73,49 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.timeline-item:focus {
-    outline: 2px solid #2c3e50;
+/* WCAG 2.2 compliant focus indicators */
+.timeline-item:focus-visible {
+    outline: 3px solid #2c3e50;
     outline-offset: 2px;
+}
+
+/* Ensuring focus is visible for all input methods */
+.timeline-item:focus {
+    outline: 3px solid #2c3e50;
+    outline-offset: 2px;
+}
+
+/* Enhanced hover states */
+.timeline-item:hover .timeline-content,
+.timeline-item:focus .timeline-content {
+    background-color: #f0f0f0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.timeline-item:hover .timeline-dot,
+.timeline-item:focus .timeline-dot {
+    background-color: #2c3e50;
+}
+
+/* Ensuring color is not the only means of conveying information */
+.timeline-item:hover::before,
+.timeline-item:focus::before {
+    background-color: #2c3e50;
+    width: 4px;
+}
+
+/* High contrast mode support */
+@media (forced-colors: active) {
+    .timeline-dot {
+        border: 2px solid CanvasText;
+    }
+    .timeline-item:hover .timeline-dot,
+    .timeline-item:focus .timeline-dot {
+        background-color: Highlight;
+    }
+    .timeline-item:focus-visible {
+        outline: 3px solid Highlight;
+    }
 }
 
 .visually-hidden {
